@@ -1,0 +1,399 @@
+Versão do shell que está sendo usada.
+echo $0
+echo $SHELL
+
+Verificar programas instalados
+sudo dpkg -l | grep (nome_programa)
+
+
+Retorna o diretório atual
+pwd
+
+
+Indicar o diretório atual
+./
+
+
+Listar arquivos/diretórios ordenado por data
+ls -ltr
+
+Listar todos os processos.
+ps axu
+
+Mais informações sobre os comandos
+(comando) --help  => ex.: ls --help
+man (comando)  => ex: man ls
+
+
+-e: Permite "formatar" a saída
+echo -e "curso\nshell\tscript"
+
+Criar arquivos ou alterar a data de arquivos já existente
+touch
+
+Criar diretórios
+mkdir
+
+Excluir arquivos / diretórios
+rm / rm -R
+
+Exibe conteúdo do arquivo na tela
+cat
+
+Exibe o conteúdo do arquivo com conteúdo invertido (última linha, penúltima linha, etc..)
+tac
+
+Exibe o final do conteúdo de um arquivo
+tail arquivo (padrão 10 linhas)
+tail -n50 arquivo (exibirá as 50 últimas linhas)
+
+Exibe o início do conteúdo de um arquivo
+head arquivo (padrão 10 linhas)
+head -n50 arquivo (exibirá as 50 primeiras linhas)
+head -c5 arquivo (exibe os 5 primeiros caracteres do arquivo).
+
+Contar palavras, caracteres ou linhas de um arquivo
+wc
+wc alunos2.txt 
+ 13  25 202 alunos2.txt
+13 linhas
+25 palavras
+202 caracteres
+
+Contar quantas palavras há nas últimas 5 linhas do arquivo
+tail -n5 alunos2.txt | wc -w
+
+Ordenar o conteúdo de um arquivo
+sort
+sort -r (ordena de forma decrescente)
+sort -k2 arquivo (ordena pelo segundo campo)
+
+Exibir a saída de um arquivo ordenando pelo terceiro campo, indicando qual é o separador dos campos
+tail /etc/passwd | sort -k3 -t":"  (considerando números como texto)
+tail /etc/passwd | sort -k3 -t":" -g  (considerando números como valores numericos)
+
+Não exibir valores repitidos no arquivo
+uniq alunos3.txt  (porém só elimina os nomes repetidos quando o segundo está logo abaixo do primeiro)
+sort alunos3.txt | uniq  (irá ordenar o conteúdo e elimina o conteúdo repitido).
+
+Substitui um caracter (não altera uma sequência)
+cat alunos3.txt | tr ai AI
+
+Deleta as letras indicadas
+cat alunos3.txt | tr -d aei
+
+Recortar partes de uma string
+cut -c (caracteres) - ex.: cat alunos2.txt | cut -c1-5
+cut -f (campos) - cat alunos2.txt | cut -d" " -f2
+
+Comparar 2 arquivos
+diff
+
+diff alunos.txt alunos3.txt 
+3c3  (linha 3)
+< Ricardo  (no arquivo da esquerda (<) está Ricardo)
+---
+> Ricardo Prudenciato  (no arquivo da direita (>) está Ricardo Prudenciato)
+
+9d8  (linha 9)
+< Maria  (Tem o nome Maria, no arquivo da esquerda, que não tem no arquivo da direita)
+
+Comparar 2 diretórios
+diff -r
+
+
+Pesquisar um texto dentro de um arquivo
+grep
+
+Procurar por arquivos e diretórios
+find
+
+Gerar uma sequência de números
+seq
+
+Executar operações aritmética
+expr  ex.: expr 9 + 3
+bc:  ex.:echo (9 + 3) | bc
+
+Redirecionamento de saída
+>   cria/sobrescreve conteúdo em um novo arquivo.
+>>  cria/concatena conteúdo no arquivo existente.
+
+2>   cria/sobrescreve conteúdo, mensagem de erro, em um novo arquivo.
+2>>  cria/concatena conteúdo, mensagem de erro, no arquivo existente.
+
+Direciona a saída normal e de erro para o mesmo arquivo.
+ls -l arquivo >> log.out 2>&1
+
+Exibir o resultado na tela e gravá-lo no arquivo de saída
+./script.sh ou comando | tee -a log.out
+ - opção -a = append (semelhante ao >>)
+
+Para não exibir a mensagem de erro na tela e nem gravar em um arquivo, direcione a saída para:
+/dev/null
+
+Redirecionamento de entrada
+Ex.: Comando tr necessita de uma entrada para ser executada.
+cat alunos.txt | tr a Z
+
+Pode ser feito da seguinte forma:
+tr a Z < alunos.txt
+
+Exibir variáveis no shell
+env  -> exibe as variável exportadas
+set  -> exibe todas as variáveis (exportadas ou não)
+
+Exportar uma variável
+export
+
+Criar uma variável
+VAR1=Curso
+
+Criar uma variável com conteúdo composto (usar aspas)
+VAR2="Curso de Shell Script"
+
+Criar uma variável a partir de um comando (usar crase ou $())
+VAR3=`date +%H`
+VAR4=$(date +%M)
+
+Para exibir os caracteres reservados do shell, podemos usar:
+echo "*"  -> Aspas duplas
+echo '*'  -> Aspas simples
+echo \*   -> Barra invertida
+
+Diferença entre aspas simples e dupla: A dupla "proteje" quase todos os caracteres especiais, com exceção do $ ` /
+
+echo '$HOME'
+$HOME
+
+echo "$HOME"
+/home/breno
+
+echo \$HOME
+$HOME
+
+..::Comandos VI
+i -> modo inserção
+esc -> cancela modo inserção
+dd -> recorta a linha
+dxd -> recorta x linhas
+yy -> copia a linha
+yxy -> copia x linhas
+p -> cola o conteúdo recortado/copiado
+/ -> pesquisar de cima para baixo
+? -> pesquisar de baixo para cima
+n -> próxima ocorrencia na pesquisa.
+N -> ocorrência anterior na pesquisa
+
+
+Códigos de saída dos comandos, vai de 0 - 255
+0: sucesso
+1 - 255: erro
+
+Comando para ver o código de retorno do comando anterior.
+$?
+
+Para verificar os códigos de retorno do comando ou programa
+man <comando>
+  --> Pesquisar as saída, cada comando pode estar de uma maneira.
+
+Para receber um conteúdo informado pelo usuário e armazenar em uma variável
+read
+
+ex.: read NOME
+ex.: read VAR1 VAR2 VAR3
+ex.: read -p "Informe seu curso: " CURSO
+    --> Permite exibir um informátivo do conteúdo que deve ser digitado
+ex.: read -s VAR1
+    --> Oculta o conteúdo digitado
+
+Intruções condicionais
+..:: IF ::..
+if <comando-condição>
+  then
+    comando1
+    comando2
+  fi
+
+if <comando-condição>
+  then
+    comando1
+  else
+    comando2
+  fi
+
+if <comando-condição>
+  then
+    comando1
+  elif <comando-condição>
+  then
+    comando2
+  else
+    comando3
+  fi
+
+Para realizar testes condicionais usa-se
+teste <comando>
+[ comando ]
+
+-a -> and
+-o -> or
+
+..:: CASE ::..
+case $valor in
+  padrao1)
+    comandos
+    ;;
+  padrao2)
+    comandos
+    ;;
+  *)
+    comandos
+    ;;
+esac
+
+Configurar tamanho da tabulação no vi
+set ts=4
+
+Visualizar o IFS (Internal Fields Separator) (tipos de separadores do shell)
+set | grep IFS
+
+Alterar o IFS
+IFS=:
+IFS=$'\n'
+
+
+Intruções condicionais
+..:: FOR ::..
+for variavel in valor1 valor2 ... valorN
+do
+    comando 1
+    comando 2
+    ...
+done
+
+ex.:
+for numero in 1 2 3 4 5
+for arquivo in alunos* - Cada iteração arquivo irá receber um arquivo que comece com o nome alunos
+for sequencia in $(seq 5 10) - Sequência de 5 à 10
+for sequencia in ${5..10} - Sequência de 5 à 10
+for sequencia in $(seq 1 5 50) - Sequência de 1 à 50 com intervalo de 5 em 5
+for sequencia in ${1..50..5} - Sequência de 1 à 50 com intervalo de 5 em 5
+for i in $(cat arquivo.txt) - A cada iteração o i irá receber um valor do arquivo
+for ((i = 5; i <= 20; i++))
+
+..:: WHILE ::..
+while <comando-condição>
+do
+    comando 1
+    comando 2
+    ...
+done
+
+x=1
+while [ $x -le 20 ]
+do
+    echo "O valor atual é $x"
+    x=$(expr $x + 1)
+done
+
+while [ $(ps axu | wc -l) - lt 300]
+
+..:: UNTIL ::..
+until <comando-condição>
+do
+    comando 1
+    comando 2
+    ...
+done
+
+
+break - Utilizado para sair do loop
+continue - Utilizado para voltar ao início do loop
+
+..:: FUNÇÕES ::..
+
+>>> Sintaxe
+function nome-funcao() {
+    Comandos
+}
+
+nome-funcao() {
+    Comandos
+}
+
+>>> Chamando funções
+nome-funcao
+nome-funcao par1 par2
+VAR=$(nome-funcao)
+
+>>> Variáveis
+Global (padrão) ou local
+
+local VAR="Shell Script"
+
+>>> Código de retorno
+ - Mesmo princípio do exit code
+
+function nome-funcao() {
+    return 10
+}
+
+echo $?
+
+..:: LOG ::..
+Redireciona todo o conteúdo do script para o log
+exec 1>> <arquivo de log>
+exec 2>&1
+
+Redirecionar o conteúdo do script para a tela e o log com exec
+exec 1>> >(tee -a <arquivo de log>)
+exec 2>&1
+
+>>>Utilizando o rsyslog
+logger -p local0.err "Teste de mensagem de erro"
+ - May  2 22:52:30 nbMint breno: Teste de mensagem de erro
+
+logger -p local0.warn -t [$0] "Mensagem utilizando o parametro -t"
+ - May  2 23:04:46 nbMint [Script: novo] Mensagem utilizando o parametro -t
+
+Enviar comando para o log
+<comando> | tee -a >(logger -p local0.warn -t [$0])
+
+>>Enviando email
+Verificar se está instalado o cliente de email
+mail
+
+Instalar
+sudo apt-get install bsd-mailx
+
+Instalando o postfix (cliente de email interno)
+sudo apt-get install postfix
+
+Para enviar um email
+mail -s "Assunto" <email> <conteúdo>
+ - mail -s "Enviando email" breno < log_interno.out
+ - echo "Curso shell script" | mail -s "Testando mail" breno
+
+Usar servidor de email externo
+mutt ou sendemail
+
+bash -n <script>
+ - Testa a síntaxe do arquivo (não executa o arquivo)
+
+bash -x <script>
+bash -v <script>
+bash -xv <script>
+ - Executa o script em debug
+
+set -x | set +x
+set -v | set +v
+set -xv | set +xv
+ - Colocar dentro do script no trecho que deseja debugar
+
+trap read DEBUG
+ - Inicia a execução passo a passo
+
+trap "" DEBUG
+ - Finaliza a execução passo a passo
+
